@@ -128,7 +128,7 @@ button{
 h2{
   font-size:clamp(24px,6vw,32px);
   line-height:1.2;
-  margin-bottom:15px;
+  margin-bottom:22px;
 }
 
 .answers{
@@ -154,21 +154,9 @@ h2{
   background:#172626;
 }
 
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:15px;
+.answer:disabled{
+  cursor:default;
 }
-
-.back{
-  padding:0 20px;
-  background:transparent;
-  border:1px solid #333;
-  color:#aaa;
-  border-radius:12px;
-}
-
-.actions .primary{flex:1}
 
 .report-box{
   background:#1b1b1b;
@@ -264,14 +252,7 @@ Começar quiz →
 
 <h2 id="question"></h2>
 
-<p>Escolha a alternativa que mais combina com você.</p>
-
 <div class="answers" id="answers"></div>
-
-<div class="actions">
-<button class="back" id="back">Voltar</button>
-<button class="primary" id="next" disabled>Continuar →</button>
-</div>
 
 </section>
 
@@ -383,121 +364,104 @@ a:[
 ];
 
 let current=0;
-let selected=Array(questions.length).fill(null);
 let username="";
+let advancing=false;
 
 const $=id=>document.getElementById(id);
 
 function show(id){
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-$(id).classList.add("active");
-window.scrollTo({top:0,behavior:"smooth"});
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  $(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 $("name").addEventListener("input",()=>{
-$("begin").disabled=$("name").value.trim().length<2;
+  $("begin").disabled=$("name").value.trim().length<2;
 });
 
 $("begin").onclick=()=>{
-username=$("name").value.trim();
-show("quiz");
-render();
+  username=$("name").value.trim();
+  current=0;
+  show("quiz");
+  render();
 };
 
 $("name").addEventListener("keydown",e=>{
-if(e.key==="Enter"&&!$("begin").disabled){
-$("begin").click();
-}
+  if(e.key==="Enter"&&!$("begin").disabled){
+    $("begin").click();
+  }
 });
 
 function render(){
 
-const data=questions[current];
+  const data=questions[current];
 
-$("counter").textContent=
-`PERGUNTA ${current+1} DE ${questions.length}`;
+  advancing=false;
 
-$("question").textContent=data.q;
+  $("counter").textContent=
+    `PERGUNTA ${current+1} DE ${questions.length}`;
 
-$("fill").style.width=
-((current+1)/questions.length*100)+"%";
+  $("question").textContent=data.q;
 
-$("answers").innerHTML="";
+  $("fill").style.width=
+    ((current+1)/questions.length*100)+"%";
 
-data.a.forEach((text,index)=>{
+  $("answers").innerHTML="";
 
-const button=document.createElement("button");
+  data.a.forEach((text,index)=>{
 
-button.className="answer";
-button.textContent=text;
+    const button=document.createElement("button");
 
-if(selected[current]===index){
-button.classList.add("selected");
-}
+    button.className="answer";
+    button.textContent=text;
 
-button.onclick=()=>{
-selected[current]=index;
-renderAnswers();
-$("next").disabled=false;
-};
+    button.onclick=()=>selectAnswer(index,button);
 
-$("answers").appendChild(button);
+    $("answers").appendChild(button);
 
-});
-
-$("next").disabled=selected[current]===null;
-
-$("back").style.visibility=
-current===0?"hidden":"visible";
-
-$("next").textContent=
-current===questions.length-1
-?"Ver meu resultado →"
-:"Continuar →";
+  });
 
 }
 
-function renderAnswers(){
+function selectAnswer(index,button){
 
-document.querySelectorAll(".answer").forEach((button,index)=>{
-button.classList.toggle("selected",index===selected[current]);
-});
+  if(advancing)return;
+
+  advancing=true;
+
+  button.classList.add("selected");
+
+  document.querySelectorAll(".answer").forEach(answer=>{
+    answer.disabled=true;
+  });
+
+  setTimeout(()=>{
+
+    if(current<questions.length-1){
+
+      current++;
+      render();
+
+    }else{
+
+      show("loading");
+
+      setTimeout(()=>{
+        $("person").textContent=username;
+        show("result");
+      },1500);
+
+    }
+
+  },180);
 
 }
-
-$("next").onclick=()=>{
-
-if(selected[current]===null)return;
-
-if(current<questions.length-1){
-
-current++;
-render();
-
-}else{
-
-show("loading");
-
-setTimeout(()=>{
-$("person").textContent=username;
-show("result");
-},1500);
-
-}
-
-};
-
-$("back").onclick=()=>{
-
-if(current>0){
-current--;
-render();
-}
-
-};
 
 $("checkout").onclick=()=>{
-window.location.href=CHECKOUT_URL;
+  window.location.href=CHECKOUT_URL;
 };
 
 </script>
