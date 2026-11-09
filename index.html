@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método Crescer | Quiz</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#101010;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+}
+
+.container{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  width:100%;
+  max-width:440px;
+  text-align:center;
+}
+
+.logo{
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-bottom:45px;
+}
+
+.logo span{color:#25f4ee}
+
+.tag{
+  color:#25f4ee;
+  font-size:11px;
+  letter-spacing:1.5px;
+  margin-bottom:15px;
+  font-weight:700;
+}
+
+h1{
+  font-size:clamp(28px,8vw,38px);
+  line-height:1.15;
+  margin-bottom:14px;
+}
+
+h1 span{color:#25f4ee}
+
+p{
+  color:#999;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:25px;
+}
+
+input{
+  width:100%;
+  padding:16px;
+  border:1px solid #333;
+  background:#1b1b1b;
+  color:white;
+  border-radius:12px;
+  font-size:16px;
+  text-align:center;
+  outline:none;
+}
+
+input:focus{border-color:#25f4ee}
+
+button{
+  font-family:inherit;
+  cursor:pointer;
+}
+
+.primary{
+  width:100%;
+  border:none;
+  background:#25f4ee;
+  color:#000;
+  font-weight:800;
+  padding:17px;
+  border-radius:12px;
+  font-size:15px;
+  margin-top:15px;
+}
+
+.primary:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
+.progress{
+  height:5px;
+  background:#333;
+  border-radius:10px;
+  margin-bottom:30px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+  background:#25f4ee;
+  transition:.3s;
+}
+
+.counter{
+  color:#25f4ee;
+  font-size:12px;
+  margin-bottom:15px;
+}
+
+.answers{
+  display:grid;
+  gap:10px;
+}
+
+.answer{
+  width:100%;
+  text-align:left;
+  padding:16px;
+  background:#1b1b1b;
+  color:#fff;
+  border:1px solid #333;
+  border-radius:12px;
+  font-size:14px;
+  line-height:1.4;
+}
+
+.answer.selected{
+  border-color:#25f4ee;
+  background:#172626;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.back{
+  padding:0 20px;
+  background:transparent;
+  border:1px solid #333;
+  color:#aaa;
+  border-radius:12px;
+}
+
+.actions .primary{flex:1}
+
+.report-box{
+  background:#1b1b1b;
+  border:1px solid #333;
+  border-radius:15px;
+  padding:22px;
+  margin:20px 0;
+}
+
+.report-box h3{
+  color:#25f4ee;
+  font-size:17px;
+  margin-bottom:10px;
+}
+
+.report-box p{margin:0}
+
+.course-title{
+  font-size:30px;
+  font-weight:800;
+  margin:25px 0 10px;
+}
+
+.course-title span{color:#25f4ee}
+
+.small{
+  font-size:11px;
+  color:#666;
+  margin-top:15px;
+}
+
+.loader{
+  width:38px;
+  height:38px;
+  border:3px solid #333;
+  border-top-color:#25f4ee;
+  border-radius:50%;
+  margin:0 auto 20px;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@media(max-width:380px){
+  .logo{margin-bottom:30px}
+  h1{font-size:28px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<div class="logo">MÉTODO <span>CRESCER</span></div>
+
+<!-- INÍCIO -->
+<section class="screen active" id="start">
+
+<div class="tag">QUIZ GRATUITO</div>
+
+<h1>Descubra como <span>crescer no TikTok</span></h1>
+
+<p>Responda 5 perguntas e descubra por onde começar.</p>
+
+<input id="name" placeholder="Digite seu nome">
+
+<button class="primary" id="begin" disabled>
+Começar quiz →
+</button>
+
+</section>
+
+<!-- PERGUNTAS -->
+<section class="screen" id="quiz">
+
+<div class="progress">
+<div class="progress-fill" id="fill"></div>
+</div>
+
+<div class="counter" id="counter"></div>
+
+<h1 id="question"></h1>
+
+<p>Escolha uma opção:</p>
+
+<div class="answers" id="answers"></div>
+
+<div class="actions">
+<button class="back" id="back">Voltar</button>
+<button class="primary" id="next" disabled>Continuar →</button>
+</div>
+
+</section>
+
+<!-- ANÁLISE -->
+<section class="screen" id="loading">
+
+<div class="loader"></div>
+
+<h1>Preparando seu resultado...</h1>
+<p>Seu próximo passo está chegando.</p>
+
+</section>
+
+<!-- RESULTADO -->
+<section class="screen" id="result">
+
+<div class="tag">SEU RESULTADO</div>
+
+<h1>Vamos crescer no TikTok, <span id="person"></span>!</h1>
+
+<p>Para evoluir, você precisa de conhecimento, prática e direcionamento.</p>
+
+<div class="report-box">
+<h3>Seu próximo passo</h3>
+<p>
+Aprenda a criar vídeos, desenvolver ganchos, entender as diretrizes, fazer lives e conhecer oportunidades de monetização.
+</p>
+</div>
+
+<div class="course-title">MÉTODO <span>CRESCER</span></div>
+
+<p>Um clube de crescimento com conteúdos e experiências de criadores e streamers.</p>
+
+<button class="primary" id="checkout">
+Quero conhecer o clube →
+</button>
+
+<div class="small">Aprenda. Pratique. Evolua.</div>
+
+</section>
+
+</div>
+</div>
+
+<script>
+
+// COLOQUE SEU CHECKOUT AQUI
+const CHECKOUT_URL = "https://SEU-LINK-DA-KIWIFY";
+
+const questions = [
+{
+q:"Como você está hoje no TikTok?",
+a:[
+"Estou começando agora",
+"Já publico, mas não cresço",
+"Quero mais seguidores",
+"Quero monetizar"
+]
+},
+{
+q:"Qual sua maior dificuldade com vídeos?",
+a:[
+"Não sei o que gravar",
+"Falta criatividade",
+"Meus vídeos não chamam atenção",
+"Não consigo alcançar pessoas"
+]
+},
+{
+q:"O que você precisa aprender sobre lives?",
+a:[
+"Como começar minha primeira live",
+"O que posso ou não falar",
+"Como atrair espectadores",
+"Como melhorar minhas lives"
+]
+},
+{
+q:"Você conhece o TikTok Shop?",
+a:[
+"Não conheço",
+"Quero começar",
+"Tenho dúvidas sobre como funciona",
+"Quero melhorar meus resultados"
+]
+},
+{
+q:"Qual seu maior objetivo?",
+a:[
+"Começar a criar conteúdo",
+"Conquistar seguidores",
+"Ter mais alcance",
+"Ganhar dinheiro com conteúdo"
+]
+}
+];
+
+let current=0;
+let selected=Array(questions.length).fill(null);
+let username="";
+
+const $=id=>document.getElementById(id);
+
+function show(id){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+$(id).classList.add("active");
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+$("name").addEventListener("input",()=>{
+$("begin").disabled=$("name").value.trim().length<2;
+});
+
+$("begin").onclick=()=>{
+username=$("name").value.trim();
+show("quiz");
+render();
+};
+
+function render(){
+
+const data=questions[current];
+
+$("counter").textContent=`PERGUNTA ${current+1} DE ${questions.length}`;
+$("question").textContent=data.q;
+$("fill").style.width=((current+1)/questions.length*100)+"%";
+
+$("answers").innerHTML="";
+
+data.a.forEach((text,index)=>{
+
+const button=document.createElement("button");
+button.className="answer";
+button.textContent=text;
+
+if(selected[current]===index)
+button.classList.add("selected");
+
+button.onclick=()=>{
+selected[current]=index;
+renderAnswers();
+$("next").disabled=false;
+};
+
+$("answers").appendChild(button);
+
+});
+
+$("next").disabled=selected[current]===null;
+$("back").style.visibility=current===0?"hidden":"visible";
+
+$("next").textContent=current===questions.length-1
+?"Ver meu resultado →"
+:"Continuar →";
+
+}
+
+function renderAnswers(){
+document.querySelectorAll(".answer").forEach((button,index)=>{
+button.classList.toggle("selected",index===selected[current]);
+});
+}
+
+$("next").onclick=()=>{
+if(selected[current]===null)return;
+
+if(current<questions.length-1){
+current++;
+render();
+}else{
+show("loading");
+setTimeout(()=>{
+$("person").textContent=username;
+show("result");
+},1500);
+}
+};
+
+$("back").onclick=()=>{
+if(current>0){
+current--;
+render();
+}
+};
+
+$("checkout").onclick=()=>{
+if(CHECKOUT_URL==="https://SEU-LINK-DA-KIWIFY"){
+alert("Adicione seu link da Kiwify no código.");
+return;
+}
+window.location.href=CHECKOUT_URL;
+};
+
+</script>
+
+</body>
+</html>
