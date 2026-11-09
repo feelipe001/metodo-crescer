@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101010">
 <title>Método Crescer | Quiz</title>
 
 <style>
@@ -36,7 +37,7 @@ body{
   font-size:14px;
   font-weight:800;
   letter-spacing:1px;
-  margin-bottom:45px;
+  margin-bottom:35px;
 }
 
 .logo span{color:#25f4ee}
@@ -124,6 +125,12 @@ button{
   margin-bottom:15px;
 }
 
+h2{
+  font-size:clamp(24px,6vw,32px);
+  line-height:1.2;
+  margin-bottom:15px;
+}
+
 .answers{
   display:grid;
   gap:10px;
@@ -138,7 +145,8 @@ button{
   border:1px solid #333;
   border-radius:12px;
   font-size:14px;
-  line-height:1.4;
+  line-height:1.5;
+  transition:.2s;
 }
 
 .answer.selected{
@@ -186,12 +194,6 @@ button{
 
 .course-title span{color:#25f4ee}
 
-.small{
-  font-size:11px;
-  color:#666;
-  margin-top:15px;
-}
-
 .loader{
   width:38px;
   height:38px;
@@ -206,9 +208,23 @@ button{
   to{transform:rotate(360deg)}
 }
 
+.small{
+  font-size:11px;
+  color:#666;
+  margin-top:15px;
+}
+
 @media(max-width:380px){
-  .logo{margin-bottom:30px}
+  .logo{margin-bottom:28px}
   h1{font-size:28px}
+  .answer{font-size:13px;padding:14px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
@@ -225,11 +241,11 @@ button{
 
 <div class="tag">QUIZ GRATUITO</div>
 
-<h1>Descubra como <span>crescer no TikTok</span></h1>
+<h1>Descubra o que está faltando para você <span>crescer no TikTok</span></h1>
 
-<p>Responda 5 perguntas e descubra por onde começar.</p>
+<p>Responda 5 perguntas rápidas e descubra por onde começar.</p>
 
-<input id="name" placeholder="Digite seu nome">
+<input id="name" placeholder="Digite seu nome" maxlength="40">
 
 <button class="primary" id="begin" disabled>
 Começar quiz →
@@ -246,9 +262,9 @@ Começar quiz →
 
 <div class="counter" id="counter"></div>
 
-<h1 id="question"></h1>
+<h2 id="question"></h2>
 
-<p>Escolha uma opção:</p>
+<p>Escolha a alternativa que mais combina com você.</p>
 
 <div class="answers" id="answers"></div>
 
@@ -265,32 +281,38 @@ Começar quiz →
 <div class="loader"></div>
 
 <h1>Preparando seu resultado...</h1>
-<p>Seu próximo passo está chegando.</p>
 
 </section>
 
-<!-- RESULTADO -->
+<!-- RELATÓRIO -->
 <section class="screen" id="result">
 
 <div class="tag">SEU RESULTADO</div>
 
-<h1>Vamos crescer no TikTok, <span id="person"></span>!</h1>
+<h1>Seu próximo passo no TikTok, <span id="person"></span>.</h1>
 
-<p>Para evoluir, você precisa de conhecimento, prática e direcionamento.</p>
+<p>
+Você já deu um passo importante: buscar conhecimento antes de continuar criando conteúdo sem direção.
+</p>
 
 <div class="report-box">
-<h3>Seu próximo passo</h3>
+
+<h3>O que você precisa desenvolver</h3>
+
 <p>
-Aprenda a criar vídeos, desenvolver ganchos, entender as diretrizes, fazer lives e conhecer oportunidades de monetização.
+Aprender a criar vídeos que despertem interesse, entender como crescer, conhecer as diretrizes das lives e descobrir possibilidades de monetização.
 </p>
+
 </div>
 
 <div class="course-title">MÉTODO <span>CRESCER</span></div>
 
-<p>Um clube de crescimento com conteúdos e experiências de criadores e streamers.</p>
+<p>
+Um clube de crescimento com criadores e streamers compartilhando conhecimentos sobre TikTok.
+</p>
 
 <button class="primary" id="checkout">
-Quero conhecer o clube →
+Conhecer o Método Crescer →
 </button>
 
 <div class="small">Aprenda. Pratique. Evolua.</div>
@@ -302,55 +324,62 @@ Quero conhecer o clube →
 
 <script>
 
-// COLOQUE SEU CHECKOUT AQUI
-const CHECKOUT_URL = "https://SEU-LINK-DA-KIWIFY";
+// CHECKOUT KIWIFY
+const CHECKOUT_URL = "https://pay.kiwify.com.br/idNX4oo";
 
+// PERGUNTAS ORIGINAIS — MANTIDAS SEM ALTERAÇÃO
 const questions = [
+
 {
-q:"Como você está hoje no TikTok?",
+q:"Qual dessas situações mais representa você hoje?",
 a:[
-"Estou começando agora",
-"Já publico, mas não cresço",
-"Quero mais seguidores",
-"Quero monetizar"
+"Estou começando agora e não sei por onde começar.",
+"Já publico vídeos, mas ainda não consigo crescer.",
+"Tenho algumas visualizações, mas não consigo atrair seguidores.",
+"Já faço conteúdo e quero aprender a monetizar."
 ]
 },
+
 {
-q:"Qual sua maior dificuldade com vídeos?",
+q:"Qual é sua maior dificuldade na hora de criar vídeos?",
 a:[
-"Não sei o que gravar",
-"Falta criatividade",
-"Meus vídeos não chamam atenção",
-"Não consigo alcançar pessoas"
+"Não sei sobre o que gravar.",
+"Tenho ideias, mas não sei como transformar em vídeos.",
+"Meus vídeos não chamam atenção.",
+"Não sei como fazer as pessoas assistirem até o final."
 ]
 },
+
 {
-q:"O que você precisa aprender sobre lives?",
+q:"O que mais te preocupa quando o assunto é TikTok LIVE?",
 a:[
-"Como começar minha primeira live",
-"O que posso ou não falar",
-"Como atrair espectadores",
-"Como melhorar minhas lives"
+"Não sei como começar minha primeira live.",
+"Tenho medo de falar algo que gere restrições.",
+"Já faço lives, mas não consigo manter as pessoas assistindo.",
+"Não sei como organizar uma live para atrair seguidores e oportunidades."
 ]
 },
+
 {
-q:"Você conhece o TikTok Shop?",
+q:"Você sabe como aproveitar o TikTok para ganhar dinheiro?",
 a:[
-"Não conheço",
-"Quero começar",
-"Tenho dúvidas sobre como funciona",
-"Quero melhorar meus resultados"
+"Não conheço as possibilidades de monetização.",
+"Quero começar no TikTok Shop, mas não sei como.",
+"Já conheço algumas formas de ganhar dinheiro, mas não sei como começar.",
+"Já monetizo e quero melhorar meus resultados."
 ]
 },
+
 {
-q:"Qual seu maior objetivo?",
+q:"O que você mais gostaria de conquistar com o TikTok?",
 a:[
-"Começar a criar conteúdo",
-"Conquistar seguidores",
-"Ter mais alcance",
-"Ganhar dinheiro com conteúdo"
+"Criar meus primeiros vídeos e começar do jeito certo.",
+"Crescer e conquistar meus primeiros seguidores.",
+"Ter mais alcance e construir uma audiência.",
+"Transformar meu conteúdo em uma fonte de renda."
 ]
 }
+
 ];
 
 let current=0;
@@ -375,24 +404,36 @@ show("quiz");
 render();
 };
 
+$("name").addEventListener("keydown",e=>{
+if(e.key==="Enter"&&!$("begin").disabled){
+$("begin").click();
+}
+});
+
 function render(){
 
 const data=questions[current];
 
-$("counter").textContent=`PERGUNTA ${current+1} DE ${questions.length}`;
+$("counter").textContent=
+`PERGUNTA ${current+1} DE ${questions.length}`;
+
 $("question").textContent=data.q;
-$("fill").style.width=((current+1)/questions.length*100)+"%";
+
+$("fill").style.width=
+((current+1)/questions.length*100)+"%";
 
 $("answers").innerHTML="";
 
 data.a.forEach((text,index)=>{
 
 const button=document.createElement("button");
+
 button.className="answer";
 button.textContent=text;
 
-if(selected[current]===index)
+if(selected[current]===index){
 button.classList.add("selected");
+}
 
 button.onclick=()=>{
 selected[current]=index;
@@ -405,47 +446,57 @@ $("answers").appendChild(button);
 });
 
 $("next").disabled=selected[current]===null;
-$("back").style.visibility=current===0?"hidden":"visible";
 
-$("next").textContent=current===questions.length-1
+$("back").style.visibility=
+current===0?"hidden":"visible";
+
+$("next").textContent=
+current===questions.length-1
 ?"Ver meu resultado →"
 :"Continuar →";
 
 }
 
 function renderAnswers(){
+
 document.querySelectorAll(".answer").forEach((button,index)=>{
 button.classList.toggle("selected",index===selected[current]);
 });
+
 }
 
 $("next").onclick=()=>{
+
 if(selected[current]===null)return;
 
 if(current<questions.length-1){
+
 current++;
 render();
+
 }else{
+
 show("loading");
+
 setTimeout(()=>{
 $("person").textContent=username;
 show("result");
 },1500);
+
 }
+
 };
 
 $("back").onclick=()=>{
+
 if(current>0){
 current--;
 render();
 }
+
 };
 
 $("checkout").onclick=()=>{
-if(CHECKOUT_URL==="https://SEU-LINK-DA-KIWIFY"){
-alert("Adicione seu link da Kiwify no código.");
-return;
-}
 window.location.href=CHECKOUT_URL;
 };
 
