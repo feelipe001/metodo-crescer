@@ -1,926 +1,129 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b0e">
-  <title>MC Club | Método Crescer</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #080b0e;
-      --surface: #10161b;
-      --cyan: #25f4ee;
-      --pink: #fe2c55;
-      --white: #f7f8fa;
-      --muted: #9ba6ad;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    button, input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .ambient {
-      position: fixed;
-      width: 520px;
-      height: 520px;
-      border-radius: 50%;
-      filter: blur(140px);
-      opacity: .12;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .ambient.one {
-      background: var(--cyan);
-      top: -250px;
-      left: -220px;
-    }
-
-    .ambient.two {
-      background: var(--pink);
-      right: -300px;
-      bottom: -250px;
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      min-height: 100vh;
-    }
-
-    .brand {
-      text-align: center;
-      padding: 34px 20px 20px;
-      font-family: 'Manrope', sans-serif;
-      font-weight: 800;
-      font-size: 19px;
-      letter-spacing: 4px;
-    }
-
-    .brand span {
-      color: var(--cyan);
-    }
-
-    .screen {
-      display: none;
-      width: 100%;
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 48px 22px 80px;
-      animation: appear .55s ease both;
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .intro {
-      text-align: center;
-      padding-top: 55px;
-    }
-
-    .intro h1 {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(38px, 8vw, 66px);
-      line-height: 1.06;
-      letter-spacing: -2.8px;
-      font-weight: 800;
-      max-width: 650px;
-      margin: 0 auto 22px;
-    }
-
-    .intro h1 span {
-      color: var(--cyan);
-    }
-
-    .intro p {
-      color: var(--muted);
-      max-width: 430px;
-      margin: 0 auto;
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    .name-area {
-      max-width: 390px;
-      margin: 38px auto 0;
-    }
-
-    .name-area input {
-      width: 100%;
-      padding: 18px 20px;
-      background: #11181d;
-      border: 1px solid #26343b;
-      border-radius: 13px;
-      color: white;
-      outline: none;
-      text-align: center;
-      font-size: 15px;
-      transition: .25s;
-    }
-
-    .name-area input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(37,244,238,.08);
-    }
-
-    .primary-btn {
-      width: 100%;
-      border: 0;
-      border-radius: 13px;
-      padding: 18px 22px;
-      margin-top: 13px;
-      background: var(--cyan);
-      color: #061012;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: .6px;
-      transition: .25s;
-    }
-
-    .primary-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(37,244,238,.2);
-    }
-
-    .quiz-screen {
-      max-width: 620px;
-      padding-top: 28px;
-    }
-
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #87939a;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 4px;
-      background: #20292e;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-bottom: 55px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--cyan);
-      border-radius: 20px;
-      transition: width .35s ease;
-    }
-
-    .question-number {
-      color: var(--cyan);
-      font-size: 12px;
-      letter-spacing: 2px;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 17px;
-    }
-
-    .question-title {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(26px, 5vw, 37px);
-      text-align: center;
-      line-height: 1.2;
-      letter-spacing: -1px;
-      margin-bottom: 34px;
-    }
-
-    .answers {
-      display: grid;
-      gap: 12px;
-    }
-
-    .answer {
-      width: 100%;
-      border: 1px solid #26343b;
-      border-radius: 13px;
-      padding: 19px 20px;
-      text-align: left;
-      color: #e7ecef;
-      background: #11181d;
-      font-size: 14px;
-      line-height: 1.5;
-      transition: .2s;
-    }
-
-    .answer:hover {
-      border-color: var(--cyan);
-      background: #142126;
-      transform: translateY(-2px);
-    }
-
-    .answer.selected {
-      border-color: var(--cyan);
-      background: rgba(37,244,238,.09);
-    }
-
-    .loading-screen {
-      text-align: center;
-      padding-top: 130px;
-      min-height: 70vh;
-    }
-
-    .loader {
-      width: 54px;
-      height: 54px;
-      border: 3px solid #26343b;
-      border-top-color: var(--cyan);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      margin: 0 auto 30px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-screen h2 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 27px;
-      margin-bottom: 12px;
-    }
-
-    .loading-screen p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    /* RESULTADO / PÁGINA DE VENDAS */
-
-    .result-screen {
-      max-width: 100%;
-      padding: 20px 20px 90px;
-    }
-
-    .result-content {
-      width: 100%;
-      max-width: 760px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .result-kicker {
-      color: var(--cyan);
-      font-size: 11px;
-      letter-spacing: 3px;
-      font-weight: 800;
-      margin: 24px 0 19px;
-    }
-
-    .result-title {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(39px, 8vw, 67px);
-      line-height: 1.04;
-      letter-spacing: -3px;
-      font-weight: 800;
-      max-width: 700px;
-      margin: 0 auto 20px;
-    }
-
-    .result-title span {
-      color: var(--cyan);
-    }
-
-    .result-subtitle {
-      color: #aab5bb;
-      max-width: 480px;
-      font-size: 15px;
-      line-height: 1.8;
-      margin: 0 auto;
-    }
-
-    .hero-image {
-      position: relative;
-      width: 100%;
-      max-width: 680px;
-      height: 330px;
-      margin: 45px auto 42px;
-      border-radius: 22px;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(5,10,13,.05), rgba(5,10,13,.72)),
-        url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85')
-        center 48% / cover;
-      border: 1px solid rgba(255,255,255,.09);
-      box-shadow: 0 25px 70px rgba(0,0,0,.35);
-    }
-
-    .hero-image::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(37,244,238,.13), transparent 55%, rgba(254,44,85,.13));
-      mix-blend-mode: screen;
-    }
-
-    .image-caption {
-      position: absolute;
-      bottom: 24px;
-      left: 20px;
-      right: 20px;
-      text-align: center;
-      font-family: 'Manrope', sans-serif;
-      font-weight: 800;
-      font-size: clamp(20px, 4vw, 29px);
-      letter-spacing: -.6px;
-      text-shadow: 0 3px 15px rgba(0,0,0,.6);
-    }
-
-    .manifesto {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 15px 10px 45px;
-    }
-
-    .manifesto h2 {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(30px, 6vw, 45px);
-      line-height: 1.12;
-      letter-spacing: -1.7px;
-      margin-bottom: 19px;
-    }
-
-    .manifesto h2 span {
-      color: var(--cyan);
-    }
-
-    .manifesto p {
-      color: #aab5bb;
-      font-size: 15px;
-      line-height: 1.85;
-      max-width: 490px;
-      margin: 0 auto;
-    }
-
-    .topics {
-      color: #c6d0d5;
-      font-size: 12px;
-      letter-spacing: .5px;
-      line-height: 2;
-      margin-top: 23px;
-    }
-
-    .price-section {
-      margin: 12px auto 43px;
-      text-align: center;
-    }
-
-    .price-label {
-      font-size: 11px;
-      color: #8c989e;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      font-family: 'Manrope', sans-serif;
-      font-size: 47px;
-      font-weight: 800;
-      letter-spacing: -2px;
-    }
-
-    .price small {
-      font-size: 17px;
-      vertical-align: top;
-      letter-spacing: 0;
-      margin-right: 4px;
-    }
-
-    .price-note {
-      color: #7f8c92;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .access-panel {
-      position: relative;
-      width: 100%;
-      max-width: 570px;
-      margin: 0 auto;
-      padding: 37px 27px 32px;
-      border-radius: 22px;
-      border: 1px solid rgba(37,244,238,.35);
-      background:
-        radial-gradient(ellipse at 50% 0%, rgba(37,244,238,.13), transparent 65%),
-        linear-gradient(145deg, #111e22, #0c1216 70%);
-      box-shadow: 0 25px 80px rgba(0,0,0,.3), 0 0 45px rgba(37,244,238,.05);
-    }
-
-    .access-tag {
-      display: inline-block;
-      color: var(--cyan);
-      border: 1px solid rgba(37,244,238,.35);
-      background: rgba(37,244,238,.08);
-      border-radius: 30px;
-      padding: 7px 13px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin-bottom: 21px;
-    }
-
-    .access-panel h2 {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(25px, 5vw, 34px);
-      line-height: 1.15;
-      letter-spacing: -1px;
-      margin-bottom: 12px;
-    }
-
-    .access-panel p {
-      color: #aab5bb;
-      font-size: 13px;
-      line-height: 1.7;
-      max-width: 390px;
-      margin: 0 auto 25px;
-    }
-
-    .code-input {
-      width: 100%;
-      max-width: 390px;
-      display: block;
-      margin: 0 auto;
-      background: #080e11;
-      border: 1px solid #35464c;
-      color: white;
-      border-radius: 12px;
-      padding: 18px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      font-size: 17px;
-      font-weight: 800;
-      outline: none;
-      transition: .2s;
-    }
-
-    .code-input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(37,244,238,.08);
-    }
-
-    .code-input::placeholder {
-      color: #68777e;
-      letter-spacing: 2px;
-      font-size: 12px;
-    }
-
-    .access-button {
-      display: block;
-      width: 100%;
-      max-width: 390px;
-      margin: 12px auto 0;
-      border: 0;
-      border-radius: 12px;
-      background: var(--cyan);
-      color: #071214;
-      padding: 18px;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      transition: .25s;
-    }
-
-    .access-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(37,244,238,.18);
-    }
-
-    .code-error {
-      color: #ff778e;
-      font-size: 12px;
-      margin-top: 14px;
-      display: none;
-    }
-
-    .secure-note {
-      color: #718087;
-      font-size: 10px;
-      letter-spacing: .4px;
-      margin-top: 20px;
-    }
-
-    .footer {
-      text-align: center;
-      color: #536168;
-      font-size: 11px;
-      padding: 35px 15px 20px;
-    }
-
-    @media (max-width: 600px) {
-      .brand {
-        padding-top: 25px;
-      }
-
-      .screen {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .intro {
-        padding-top: 50px;
-      }
-
-      .progress-track {
-        margin-bottom: 43px;
-      }
-
-      .result-screen {
-        padding-left: 17px;
-        padding-right: 17px;
-      }
-
-      .result-title {
-        letter-spacing: -2px;
-      }
-
-      .hero-image {
-        height: 250px;
-        margin-top: 35px;
-        border-radius: 17px;
-      }
-
-      .access-panel {
-        padding: 31px 18px 27px;
-      }
-
-      .price {
-        font-size: 42px;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MC Club | Método Crescer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1446;--lilac:#EFEBFF;--paper:#fff;--sun:#FFC93C;--coral:#FF4F7B;--muted:#5E5880;--line:#D9D3F5;--ok:#1E9E6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--lilac);color:var(--ink);font-family:Figtree,system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{width:100%;max-width:480px;margin:0 auto;padding-left:18px;padding-right:18px}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.05;letter-spacing:-.02em}
+h1{font-size:clamp(2.1rem,9vw,2.9rem);font-weight:800}
+h2{font-size:clamp(1.6rem,7vw,2.1rem);font-weight:800}
+h3{font-size:1.15rem}
+.muted{color:var(--muted)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:6px}
+.hidden{display:none!important}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;padding:14px 22px;border:0;border-radius:16px;cursor:pointer;font-family:"Bricolage Grotesque";font-weight:700;font-size:1.15rem;text-decoration:none}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-sun{background:var(--sun);color:var(--ink);box-shadow:0 6px 0 #D9A41A;animation:pulse 2.4s infinite}
+.btn-sun:active{box-shadow:0 2px 0 #D9A41A;transform:translateY(4px)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:10px;font-size:.95rem}
+
+/* Telas centralizadas (início e quiz) */
+.screen{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:28px;padding-bottom:28px}
+.screen p{margin-left:auto;margin-right:auto;max-width:34ch}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:18px}
+.brand b{width:38px;height:38px;border-radius:12px;background:var(--ink);color:var(--sun);display:grid;place-items:center;font-family:"Bricolage Grotesque"}
+.hero-art{width:100%;max-width:300px;margin-bottom:18px}
+#intro h1{margin-bottom:12px}
+#intro p{margin-bottom:24px;font-size:1.05rem}
+
+/* Quiz */
+.progress{width:100%;display:flex;align-items:center;gap:12px;margin-bottom:22px;font-weight:600;color:var(--muted);font-size:.95rem}
+.bar{flex:1;height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .35s}
+.q-art{width:110px;height:110px;margin-bottom:14px}
+#q-title{margin-bottom:8px}
+#q-help{margin-bottom:22px}
+.options{width:100%;display:grid;gap:12px}
+.opt{width:100%;padding:17px;border-radius:16px;background:var(--paper);border:2px solid transparent;font-weight:600;cursor:pointer;text-align:center;transition:transform .15s,border-color .15s}
+.opt:active{transform:scale(.97)}
+.opt.picked{border-color:var(--ink);background:#FFF8DF}
+.q-in{animation:qin .35s ease}
+@keyframes qin{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+
+/* Animações das ilustrações */
+.float{animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.rise{animation:rise 2.6s ease-in infinite;opacity:0}
+@keyframes rise{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateY(-70px) scale(1.1)}}
+.grow{transform-origin:bottom;transform-box:fill-box;animation:grow 1.8s ease-out infinite alternate}
+@keyframes grow{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+.spin{transform-origin:center;transform-box:fill-box;animation:spin 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Diagnóstico */
+#resultado{padding-top:28px}
+.report{background:var(--ink);color:#fff;border-radius:26px;padding:26px 20px;text-align:center}
+.tag{display:inline-block;background:var(--sun);color:var(--ink);font-weight:700;font-size:.88rem;padding:5px 12px;border-radius:99px;margin-bottom:14px}
+.report p{color:#D8D3F7;margin-top:10px}
+.gauge{width:180px;margin:18px auto 4px;display:block}
+.meters{display:grid;gap:14px;margin-top:18px;text-align:left}
+.meter-top{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem;margin-bottom:6px}
+.meter-track{height:12px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
+.meter-track i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.weak .meter-track i{background:var(--coral)}
+.weak em{color:#FF9DB5;font-style:normal}
+.focus{background:var(--paper);border-radius:20px;padding:20px;margin-top:16px;border-left:6px solid var(--coral)}
+.focus h3{margin-bottom:6px}
+
+/* Vendas */
+.block{padding-top:44px;text-align:center}
+.block>h2{margin-bottom:12px}
+.block>p{margin:0 auto 10px;max-width:36ch}
+.block-art{width:100%;max-width:280px;margin:0 auto 16px;display:block}
+.modules{list-style:none;display:grid;gap:12px;margin-top:20px;text-align:left}
+.modules li{display:flex;gap:14px;align-items:flex-start;background:var(--paper);border-radius:18px;padding:16px;cursor:pointer;transition:transform .15s}
+.modules li:active{transform:scale(.98)}
+.modules svg{flex:none;width:46px;height:46px}
+.modules strong{display:block;line-height:1.25}
+.modules span{display:none;color:var(--muted);font-size:.94rem;margin-top:4px}
+.modules li.open span{display:block}
+.modules li.rec{outline:2px solid var(--coral)}
+.pill{display:block;margin-top:6px;font-size:.8rem;font-weight:700;color:var(--coral);font-style:normal}
+.checks{list-style:none;display:grid;gap:10px;margin-top:16px;text-align:left}
+.checks li{background:var(--paper);border-radius:14px;padding:14px 14px 14px 48px;position:relative}
+.checks li::before{content:"✓";position:absolute;left:14px;top:13px;width:24px;height:24px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-weight:800;font-size:.85rem}
+
+/* Oferta */
+#oferta{padding-top:44px}
+.offer{background:var(--paper);border:2px solid var(--ink);border-radius:26px;padding:24px 18px;text-align:center}
+.price{margin:16px 0 18px}
+.from{color:var(--muted);font-weight:600}
+.now{font-family:"Bricolage Grotesque";font-weight:800;line-height:1;display:flex;justify-content:center;align-items:baseline;gap:6px}
+.now small{font-size:1.4rem}.now b{font-size:4rem}
+.unlocked .now{color:var(--coral);animation:pop .5s}
+@keyframes pop{50%{transform:scale(1.2)}}
+.code{margin-top:20px;padding:16px;border-radius:18px;background:var(--lilac)}
+.code label{display:block;font-weight:700}
+.code p{font-size:.92rem;color:var(--muted);margin:4px 0 12px}
+.code-row{display:flex;gap:8px}
+.code-row input{flex:1;min-width:0;height:52px;border-radius:12px;border:2px solid var(--line);padding:0 14px;font-weight:700;text-transform:uppercase;text-align:center;letter-spacing:.1em}
+.code-row button{height:52px;padding:0 16px;border-radius:12px;border:0;background:var(--ink);color:#fff;font-weight:700;cursor:pointer}
+.code-msg{margin-top:10px;font-weight:600;font-size:.94rem;min-height:1.2em}
+.err{color:#C42452}.ok{color:var(--ok)}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.unlocked .code{background:#E3F6EC}
+.safe{margin-top:14px;font-size:.9rem;color:var(--muted)}
+.confetti{position:fixed;top:-10px;width:10px;height:14px;z-index:50;pointer-events:none;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+details{background:var(--paper);border-radius:16px;padding:0 18px;margin-top:10px;text-align:left}
+summary{cursor:pointer;padding:16px 0;font-weight:700}
+details p{padding-bottom:16px;color:var(--muted)}
+footer{padding-top:40px;padding-bottom:110px;text-align:center;font-size:.88rem;color:var(--muted)}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(239,235,255,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .3s}
+.sticky.show{transform:none}
+.sticky-in{max-width:480px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.sticky-price{font-family:"Bricolage Grotesque";font-weight:800;font-size:1.35rem;white-space:nowrap}
+.sticky .btn{min-height:50px;font-size:1rem;animation:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
-
-<body>
-  <div class="ambient one"></div>
-  <div class="ambient two"></div>
-
-  <div class="page">
-    <header class="brand">MC <span>CLUB</span></header>
-
-    <!-- INÍCIO -->
-    <main>
-      <section class="screen active intro" id="startScreen">
-        <div class="eyebrow">MÉTODO CRESCER</div>
-
-        <h1>Descubra o que falta para o seu <span>crescimento.</span></h1>
-
-        <p>
-          Responda algumas perguntas rápidas e descubra qual pode ser o seu próximo passo no TikTok.
-        </p>
-
-        <div class="name-area">
-          <input
-            type="text"
-            id="userName"
-            placeholder="Como podemos te chamar?"
-            maxlength="35"
-            autocomplete="given-name"
-          >
-          <button class="primary-btn" onclick="startQuiz()">
-            COMEÇAR DIAGNÓSTICO
-          </button>
-        </div>
-      </section>
-
-      <!-- QUIZ -->
-      <section class="screen quiz-screen" id="quizScreen">
-        <div class="progress-info">
-          <span>SEU DIAGNÓSTICO</span>
-          <span id="progressText">01 / 05</span>
-        </div>
-
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-
-        <div class="question-number" id="questionNumber">PERGUNTA 01</div>
-        <h2 class="question-title" id="questionTitle"></h2>
-        <div class="answers" id="answers"></div>
-      </section>
-
-      <!-- CARREGAMENTO -->
-      <section class="screen loading-screen" id="loadingScreen">
-        <div class="loader"></div>
-        <h2>Preparando seu resultado...</h2>
-        <p>Estamos organizando suas respostas.</p>
-      </section>
-
-      <!-- RESULTADO / PÁGINA DE VENDAS -->
-      <section class="screen result-screen" id="resultScreen">
-        <div class="result-content">
-
-          <div class="result-kicker">SEU PRÓXIMO PASSO</div>
-
-          <h1 class="result-title">
-            Seu próximo nível começa aqui<span>.</span>
-          </h1>
-
-          <p class="result-subtitle" id="resultGreeting">
-            Você já deu um passo importante: buscar conhecimento para crescer com mais direção.
-          </p>
-
-          <div class="hero-image">
-            <div class="image-caption">Conhecimento que transforma criadores.</div>
-          </div>
-
-          <div class="manifesto">
-            <h2>
-              Não precisa descobrir tudo <span>sozinho.</span>
-            </h2>
-
-            <p>
-              O MC Club é uma plataforma de conhecimento para quem quer criar melhor, crescer no TikTok e descobrir novas oportunidades com seu conteúdo.
-            </p>
-
-            <div class="topics">
-              CRIAÇÃO DE VÍDEOS &nbsp;·&nbsp; CRESCIMENTO &nbsp;·&nbsp; TIKTOK LIVE &nbsp;·&nbsp; MONETIZAÇÃO
-            </div>
-          </div>
-
-          <div class="price-section">
-            <div class="price-label">Valor de referência</div>
-            <div class="price"><small>R$</small>97,00</div>
-            <div class="price-note">Acesso ao MC Club</div>
-          </div>
-
-          <div class="access-panel">
-            <div class="access-tag">CONDIÇÃO ESPECIAL DA LIVE</div>
-
-            <h2>Está acompanhando a live?</h2>
-
-            <p>
-              Insira a palavra-chave informada durante a transmissão para liberar sua condição especial de acesso.
-            </p>
-
-            <input
-              type="text"
-              class="code-input"
-              id="accessCode"
-              placeholder="DIGITE O CÓDIGO"
-              maxlength="20"
-              autocomplete="off"
-            >
-
-            <button class="access-button" onclick="validateCode()">
-              LIBERAR MEU ACESSO
-            </button>
-
-            <div class="code-error" id="codeError">
-              Código não encontrado. Confira a palavra informada na live.
-            </div>
-
-            <div class="secure-note">
-              ACESSO DIGITAL • MC CLUB
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      MC CLUB — MÉTODO CRESCER
-    </footer>
-  </div>
-
-  <script>
-    const CHECKOUT_URL = "https://pay.kiwify.com.br/idNX4oo";
-
-    // Código validado no quiz. Não é exibido na página.
-    const ACCESS_CODE = "ALFA";
-
-    const questions = [
-      {
-        title: "Qual dessas situações mais representa você hoje?",
-        answers: [
-          "Estou começando agora e não sei por onde começar.",
-          "Já publico vídeos, mas ainda não consigo crescer.",
-          "Tenho algumas visualizações, mas não consigo atrair seguidores.",
-          "Já faço conteúdo e quero aprender a monetizar."
-        ]
-      },
-      {
-        title: "Qual é sua maior dificuldade na hora de criar vídeos?",
-        answers: [
-          "Não sei sobre o que gravar.",
-          "Tenho ideias, mas não sei como transformar em vídeos.",
-          "Meus vídeos não chamam atenção.",
-          "Não sei como fazer as pessoas assistirem até o final."
-        ]
-      },
-      {
-        title: "O que mais te preocupa quando o assunto é TikTok LIVE?",
-        answers: [
-          "Não sei como começar minha primeira live.",
-          "Tenho medo de falar algo que gere restrições.",
-          "Já faço lives, mas não consigo manter as pessoas assistindo.",
-          "Não sei como organizar uma live para atrair seguidores e oportunidades."
-        ]
-      },
-      {
-        title: "Você sabe como aproveitar o TikTok para ganhar dinheiro?",
-        answers: [
-          "Não conheço as possibilidades de monetização.",
-          "Quero começar no TikTok Shop, mas não sei como.",
-          "Já conheço algumas formas de ganhar dinheiro, mas não sei como começar.",
-          "Já monetizo e quero melhorar meus resultados."
-        ]
-      },
-      {
-        title: "O que você mais gostaria de conquistar com o TikTok?",
-        answers: [
-          "Criar meus primeiros vídeos e começar do jeito certo.",
-          "Crescer e conquistar meus primeiros seguidores.",
-          "Ter mais alcance e construir uma audiência.",
-          "Transformar meu conteúdo em uma fonte de renda."
-        ]
-      }
-    ];
-
-    let currentQuestion = 0;
-    let userAnswers = [];
-    let name = "";
-
-    function showScreen(screenId) {
-      document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-      });
-
-      document.getElementById(screenId).classList.add("active");
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
-    function startQuiz() {
-      const nameInput = document.getElementById("userName");
-      name = nameInput.value.trim();
-
-      if (!name) {
-        nameInput.focus();
-        nameInput.style.borderColor = "#fe2c55";
-        return;
-      }
-
-      currentQuestion = 0;
-      userAnswers = [];
-
-      showScreen("quizScreen");
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const question = questions[currentQuestion];
-
-      document.getElementById("questionNumber").textContent =
-        `PERGUNTA ${String(currentQuestion + 1).padStart(2, "0")}`;
-
-      document.getElementById("progressText").textContent =
-        `${String(currentQuestion + 1).padStart(2, "0")} / 05`;
-
-      document.getElementById("progressFill").style.width =
-        `${((currentQuestion + 1) / questions.length) * 100}%`;
-
-      document.getElementById("questionTitle").textContent = question.title;
-
-      const answersContainer = document.getElementById("answers");
-      answersContainer.innerHTML = "";
-
-      question.answers.forEach((answer, index) => {
-        const button = document.createElement("button");
-        button.className = "answer";
-        button.textContent = answer;
-
-        button.addEventListener("click", () => {
-          selectAnswer(index, button);
-        });
-
-        answersContainer.appendChild(button);
-      });
-    }
-
-    function selectAnswer(index, button) {
-      if (button.classList.contains("selected")) return;
-
-      document.querySelectorAll(".answer").forEach(answer => {
-        answer.classList.remove("selected");
-      });
-
-      button.classList.add("selected");
-      userAnswers.push(index);
-
-      setTimeout(() => {
-        currentQuestion++;
-
-        if (currentQuestion < questions.length) {
-          renderQuestion();
-        } else {
-          finishQuiz();
-        }
-      }, 220);
-    }
-
-    function finishQuiz() {
-      showScreen("loadingScreen");
-
-      setTimeout(() => {
-        document.getElementById("resultGreeting").textContent =
-          `${name}, você já deu um passo importante: buscar conhecimento para crescer com mais direção.`;
-
-        showScreen("resultScreen");
-      }, 1800);
-    }
-
-    function validateCode() {
-      const input = document.getElementById("accessCode");
-      const error = document.getElementById("codeError");
-      const enteredCode = input.value.trim().toUpperCase();
-
-      if (enteredCode === ACCESS_CODE) {
-        error.style.display = "none";
-
-        // Substitua CHECKOUT_URL pelo link promocional da Kiwify
-        // com a condição de R$ 37,00 já aplicada.
-        window.location.href = CHECKOUT_URL;
-      } else {
-        error.style.display = "block";
-        input.style.borderColor = "#fe2c55";
-        input.focus();
-      }
-    }
-
-    document.getElementById("accessCode").addEventListener("keydown", event => {
-      if (event.key === "Enter") {
-        validateCode();
-      }
-    });
-
-    document.getElementById("userName").addEventListener("keydown", event => {
-      if (event.key === "Enter") {
-        startQuiz();
-      }
-    });
-  </script>
-</body>
-</html>
