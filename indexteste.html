@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101010">
+<title>MC Club | Método Crescer</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#101010;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+}
+
+.container{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  width:100%;
+  max-width:460px;
+  text-align:center;
+  margin:auto;
+}
+
+.logo{
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-bottom:35px;
+}
+
+.logo span{color:#25f4ee}
+
+.tag{
+  color:#25f4ee;
+  font-size:11px;
+  letter-spacing:1.5px;
+  margin-bottom:15px;
+  font-weight:700;
+}
+
+h1{
+  font-size:clamp(28px,8vw,38px);
+  line-height:1.15;
+  margin-bottom:14px;
+}
+
+h1 span{color:#25f4ee}
+
+p{
+  color:#999;
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:25px;
+}
+
+input{
+  width:100%;
+  padding:16px;
+  border:1px solid #333;
+  background:#1b1b1b;
+  color:white;
+  border-radius:12px;
+  font-size:16px;
+  text-align:center;
+  outline:none;
+}
+
+input:focus{border-color:#25f4ee}
+
+button{
+  font-family:inherit;
+  cursor:pointer;
+}
+
+.primary{
+  width:100%;
+  border:none;
+  background:#25f4ee;
+  color:#000;
+  font-weight:800;
+  padding:17px;
+  border-radius:12px;
+  font-size:15px;
+  margin-top:15px;
+  transition:.2s;
+}
+
+.primary:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
+.progress{
+  height:5px;
+  background:#333;
+  border-radius:10px;
+  margin-bottom:30px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+  background:#25f4ee;
+  transition:.3s;
+}
+
+.counter{
+  color:#25f4ee;
+  font-size:12px;
+  margin-bottom:15px;
+}
+
+h2{
+  font-size:clamp(24px,6vw,32px);
+  line-height:1.2;
+  margin-bottom:22px;
+}
+
+.answers{
+  display:grid;
+  gap:10px;
+}
+
+.answer{
+  width:100%;
+  text-align:left;
+  padding:16px;
+  background:#1b1b1b;
+  color:#fff;
+  border:1px solid #333;
+  border-radius:12px;
+  font-size:14px;
+  line-height:1.5;
+  transition:.2s;
+}
+
+.answer.selected{
+  border-color:#25f4ee;
+  background:#172626;
+}
+
+.answer:disabled{cursor:default}
+
+.loader{
+  width:38px;
+  height:38px;
+  border:3px solid #333;
+  border-top-color:#25f4ee;
+  border-radius:50%;
+  margin:0 auto 20px;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* PÁGINA FINAL */
+
+#result{
+  text-align:left;
+  padding-bottom:25px;
+}
+
+#result .tag{text-align:center}
+
+.result-heading{
+  text-align:center;
+}
+
+.result-heading h1{
+  font-size:30px;
+}
+
+.result-heading p{
+  margin-bottom:22px;
+}
+
+.diagnosis{
+  background:#191919;
+  border:1px solid #303030;
+  border-radius:15px;
+  padding:20px;
+  margin:20px 0 28px;
+}
+
+.diagnosis-label{
+  color:#25f4ee;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1px;
+  margin-bottom:10px;
+}
+
+.diagnosis p{
+  margin:0;
+  font-size:14px;
+}
+
+.club-label{
+  color:#25f4ee;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.club-title{
+  text-align:center;
+  font-size:34px;
+  line-height:1.1;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.club-title span{color:#25f4ee}
+
+.club-description{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.netflix-box{
+  background:linear-gradient(145deg,#191919,#111);
+  border:1px solid #343434;
+  border-radius:16px;
+  padding:20px;
+  margin:22px 0;
+}
+
+.netflix-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:15px;
+}
+
+.play-mark{
+  width:43px;
+  height:43px;
+  flex-shrink:0;
+  border:2px solid #25f4ee;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#25f4ee;
+  font-size:20px;
+}
+
+.netflix-top strong{
+  font-size:17px;
+  line-height:1.2;
+}
+
+.netflix-box>p{
+  margin:0;
+  font-size:13px;
+}
+
+.content-title{
+  font-size:18px;
+  margin:28px 0 15px;
+}
+
+.content-list{
+  display:grid;
+  gap:10px;
+}
+
+.content-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:14px;
+  background:#191919;
+  border:1px solid #292929;
+  border-radius:12px;
+}
+
+.content-number{
+  color:#25f4ee;
+  font-size:12px;
+  font-weight:800;
+  padding-top:2px;
+}
+
+.content-item strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.content-item small{
+  color:#999;
+  font-size:12px;
+  line-height:1.45;
+  display:block;
+}
+
+.community{
+  margin-top:25px;
+  padding:20px;
+  border-radius:15px;
+  background:#172323;
+  border:1px solid #214443;
+}
+
+.community h3{
+  font-size:18px;
+  margin-bottom:9px;
+}
+
+.community p{
+  font-size:13px;
+  margin:0;
+}
+
+.price-area{
+  text-align:center;
+  margin:30px 0 20px;
+  padding:22px;
+  background:#191919;
+  border:1px solid #333;
+  border-radius:15px;
+}
+
+.price-label{
+  color:#999;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.price{
+  font-size:38px;
+  font-weight:800;
+  color:#fff;
+}
+
+.price small{
+  font-size:15px;
+  font-weight:500;
+}
+
+.price-description{
+  color:#888;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.access-box{
+  position:relative;
+  overflow:hidden;
+  padding:23px 18px;
+  margin-top:25px;
+  border-radius:17px;
+  background:linear-gradient(145deg,#123b3a,#102323 65%,#24131b);
+  border:2px solid #25f4ee;
+  box-shadow:0 0 25px rgba(37,244,238,.13);
+  text-align:center;
+}
+
+.access-badge{
+  display:inline-block;
+  background:#25f4ee;
+  color:#000;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  padding:7px 12px;
+  border-radius:30px;
+  margin-bottom:15px;
+}
+
+.access-box h3{
+  font-size:22px;
+  line-height:1.2;
+  margin-bottom:9px;
+}
+
+.access-box p{
+  color:#c4d6d5;
+  font-size:13px;
+  margin-bottom:17px;
+}
+
+.access-box input{
+  background:#101818;
+  border:1px solid #52716f;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  font-weight:800;
+  font-size:17px;
+}
+
+.access-box input::placeholder{
+  color:#849795;
+  letter-spacing:1px;
+  font-weight:400;
+  font-size:13px;
+}
+
+.access-button{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  padding:16px;
+  margin-top:10px;
+  background:#25f4ee;
+  color:#000;
+  font-size:14px;
+  font-weight:800;
+}
+
+.access-error{
+  display:none;
+  color:#ff607d;
+  font-size:12px;
+  margin-top:12px;
+}
+
+.access-note{
+  color:#8fa5a3;
+  font-size:10px;
+  margin-top:13px;
+}
+
+.regular-button{
+  margin-top:12px;
+}
+
+.small{
+  font-size:11px;
+  color:#666;
+  text-align:center;
+  margin-top:18px;
+}
+
+@media(max-width:380px){
+  .logo{margin-bottom:28px}
+  h1{font-size:28px}
+  .answer{font-size:13px;padding:14px}
+  .club-title{font-size:30px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<div class="logo">MÉTODO <span>CRESCER</span></div>
+
+<!-- INÍCIO -->
+<section class="screen active" id="start">
+
+<div class="tag">QUIZ GRATUITO</div>
+
+<h1>Descubra o que está faltando para você <span>crescer no TikTok</span></h1>
+
+<p>Responda 5 perguntas rápidas e descubra por onde começar.</p>
+
+<input id="name" placeholder="Digite seu nome" maxlength="40">
+
+<button class="primary" id="begin" disabled>
+Começar quiz →
+</button>
+
+</section>
+
+<!-- PERGUNTAS -->
+<section class="screen" id="quiz">
+
+<div class="progress">
+<div class="progress-fill" id="fill"></div>
+</div>
+
+<div class="counter" id="counter"></div>
+
+<h2 id="question"></h2>
+
+<div class="answers" id="answers"></div>
+
+</section>
+
+<!-- ANÁLISE -->
+<section class="screen" id="loading">
+
+<div class="loader"></div>
+
+<h1>Preparando seu resultado...</h1>
+
+<p>Estamos preparando seu próximo passo.</p>
+
+</section>
+
+<!-- RESULTADO E PÁGINA DE VENDAS -->
+<section class="screen" id="result">
+
+<div class="result-heading">
+
+<div class="tag">SEU DIAGNÓSTICO</div>
+
+<h1>Seu próximo passo no TikTok, <span id="person"></span>.</h1>
+
+<p>
+Você já começou a buscar uma maneira de evoluir. Mas, para crescer de verdade, não basta apenas publicar vídeos e torcer para que eles alcancem muitas pessoas.
+</p>
+
+</div>
+
+<div class="diagnosis">
+<div class="diagnosis-label">O QUE VOCÊ PRECISA DESENVOLVER</div>
+
+<p>
+Criar conteúdos que despertem interesse, encontrar boas ideias, melhorar seu posicionamento, entender o funcionamento das lives e descobrir como transformar sua audiência em oportunidades.
+</p>
+</div>
+
+<div class="club-label">CONHEÇA O MC CLUB</div>
+
+<div class="club-title">
+MÉTODO <span>CRESCER</span>
+</div>
+
+<p class="club-description">
+Imagine ter uma Netflix de conhecimento sobre TikTok, com conteúdos para aprender, colocar em prática e evoluir no seu próprio ritmo.
+</p>
+
+<div class="netflix-box">
+
+<div class="netflix-top">
+<div class="play-mark">▶</div>
+<strong>Uma biblioteca de conhecimento sobre TikTok.</strong>
+</div>
+
+<p>
+No MC Club, você encontra conteúdos de criadores e streamers que compartilham experiências, estratégias e conhecimentos para ajudar você a desenvolver seu perfil.
+</p>
+
+</div>
+
+<h3 class="content-title">O que você vai encontrar lá dentro</h3>
+
+<div class="content-list">
+
+<div class="content-item">
+<div class="content-number">01</div>
+<div>
+<strong>Criação de conteúdo</strong>
+<small>Aprenda a desenvolver vídeos, encontrar ideias e criar conteúdos que chamem a atenção.</small>
+</div>
+</div>
+
+<div class="content-item">
+<div class="content-number">02</div>
+<div>
+<strong>Ganchos e estratégias</strong>
+<small>Conheça formas de prender a atenção e melhorar o desempenho dos seus vídeos.</small>
+</div>
+</div>
+
+<div class="content-item">
+<div class="content-number">03</div>
+<div>
+<strong>Posicionamento e crescimento</strong>
+<small>Entenda como construir seu perfil, atrair seguidores e desenvolver uma audiência.</small>
+</div>
+</div>
+
+<div class="content-item">
+<div class="content-number">04</div>
+<div>
+<strong>TikTok LIVE</strong>
+<small>Aprenda sobre primeiras lives, organização, interação com o público e diretrizes da plataforma.</small>
+</div>
+</div>
+
+<div class="content-item">
+<div class="content-number">05</div>
+<div>
+<strong>Monetização</strong>
+<small>Conheça possibilidades como TikTok Shop e outras formas de transformar conteúdo em oportunidades.</small>
+</div>
+</div>
+
+</div>
+
+<div class="community">
+<h3>Você também faz parte da comunidade.</h3>
+<p>
+O MC Club não é apenas uma coleção de aulas. É um espaço para aprender com outros criadores, acompanhar conhecimentos compartilhados e continuar evoluindo junto com a comunidade.
+</p>
+</div>
+
+<div class="price-area">
+
+<div class="price-label">Valor de acesso ao MC Club</div>
+
+<div class="price">R$ 97,00</div>
+
+<div class="price-description">
+Acesso ao ambiente de conteúdos do Método Crescer.
+</div>
+
+</div>
+
+<!-- CÓDIGO DE ACESSO DA LIVE -->
+<div class="access-box">
+
+<div class="access-badge">ACESSO ESPECIAL DA LIVE</div>
+
+<h3>Você tem um código de acesso?</h3>
+
+<p>
+Se você está acompanhando nossa live, digite aqui a palavra-chave compartilhada durante a transmissão para liberar sua condição especial.
+</p>
+
+<input
+  type="text"
+  id="accessCode"
+  placeholder="DIGITE SEU CÓDIGO"
+  maxlength="30"
+  autocomplete="off"
+>
+
+<button class="access-button" id="validateCode">
+LIBERAR MEU ACESSO →
+</button>
+
+<div class="access-error" id="codeError">
+Código não reconhecido. Confira a palavra e tente novamente.
+</div>
+
+<div class="access-note">
+O código é compartilhado durante as transmissões ao vivo.
+</div>
+
+</div>
+
+<button class="primary regular-button" id="checkout">
+Conhecer o MC Club →
+</button>
+
+<div class="small">
+Aprenda. Pratique. Evolua.
+</div>
+
+</section>
+
+</div>
+</div>
+
+<script>
+
+// LINK DE CHECKOUT KIWIFY
+const CHECKOUT_URL = "https://pay.kiwify.com.br/idNX4oo";
+
+// CÓDIGO DE ACESSO DA LIVE
+const ACCESS_CODE = "ALFA";
+
+// PERGUNTAS ORIGINAIS — SEM ALTERAÇÃO
+const questions = [
+
+{
+q:"Qual dessas situações mais representa você hoje?",
+a:[
+"Estou começando agora e não sei por onde começar.",
+"Já publico vídeos, mas ainda não consigo crescer.",
+"Tenho algumas visualizações, mas não consigo atrair seguidores.",
+"Já faço conteúdo e quero aprender a monetizar."
+]
+},
+
+{
+q:"Qual é sua maior dificuldade na hora de criar vídeos?",
+a:[
+"Não sei sobre o que gravar.",
+"Tenho ideias, mas não sei como transformar em vídeos.",
+"Meus vídeos não chamam atenção.",
+"Não sei como fazer as pessoas assistirem até o final."
+]
+},
+
+{
+q:"O que mais te preocupa quando o assunto é TikTok LIVE?",
+a:[
+"Não sei como começar minha primeira live.",
+"Tenho medo de falar algo que gere restrições.",
+"Já faço lives, mas não consigo manter as pessoas assistindo.",
+"Não sei como organizar uma live para atrair seguidores e oportunidades."
+]
+},
+
+{
+q:"Você sabe como aproveitar o TikTok para ganhar dinheiro?",
+a:[
+"Não conheço as possibilidades de monetização.",
+"Quero começar no TikTok Shop, mas não sei como.",
+"Já conheço algumas formas de ganhar dinheiro, mas não sei como começar.",
+"Já monetizo e quero melhorar meus resultados."
+]
+},
+
+{
+q:"O que você mais gostaria de conquistar com o TikTok?",
+a:[
+"Criar meus primeiros vídeos e começar do jeito certo.",
+"Crescer e conquistar meus primeiros seguidores.",
+"Ter mais alcance e construir uma audiência.",
+"Transformar meu conteúdo em uma fonte de renda."
+]
+}
+
+];
+
+let current=0;
+let username="";
+let advancing=false;
+
+const $=id=>document.getElementById(id);
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  $(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+$("name").addEventListener("input",()=>{
+  $("begin").disabled=$("name").value.trim().length<2;
+});
+
+$("begin").onclick=()=>{
+  username=$("name").value.trim();
+  current=0;
+  show("quiz");
+  render();
+};
+
+$("name").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&!$("begin").disabled){
+    $("begin").click();
+  }
+});
+
+function render(){
+
+  const data=questions[current];
+
+  advancing=false;
+
+  $("counter").textContent=
+    `PERGUNTA ${current+1} DE ${questions.length}`;
+
+  $("question").textContent=data.q;
+
+  $("fill").style.width=
+    ((current+1)/questions.length*100)+"%";
+
+  $("answers").innerHTML="";
+
+  data.a.forEach((text,index)=>{
+
+    const button=document.createElement("button");
+
+    button.className="answer";
+    button.textContent=text;
+
+    button.onclick=()=>selectAnswer(button);
+
+    $("answers").appendChild(button);
+
+  });
+
+}
+
+function selectAnswer(button){
+
+  if(advancing)return;
+
+  advancing=true;
+
+  button.classList.add("selected");
+
+  document.querySelectorAll(".answer").forEach(answer=>{
+    answer.disabled=true;
+  });
+
+  setTimeout(()=>{
+
+    if(current<questions.length-1){
+
+      current++;
+      render();
+
+    }else{
+
+      show("loading");
+
+      setTimeout(()=>{
+        $("person").textContent=username;
+        show("result");
+      },1500);
+
+    }
+
+  },180);
+
+}
+
+// VALIDAÇÃO DO CÓDIGO
+function validateAccessCode(){
+
+  const typedCode=$("accessCode").value.trim().toUpperCase();
+
+  $("codeError").style.display="none";
+
+  if(typedCode===ACCESS_CODE){
+
+    window.location.href=CHECKOUT_URL;
+
+  }else{
+
+    $("codeError").style.display="block";
+
+  }
+
+}
+
+$("validateCode").onclick=validateAccessCode;
+
+$("accessCode").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    validateAccessCode();
+  }
+});
+
+// BOTÃO DE CHECKOUT
+$("checkout").onclick=()=>{
+  window.location.href=CHECKOUT_URL;
+};
+
+</script>
+
+</body>
+</html>
