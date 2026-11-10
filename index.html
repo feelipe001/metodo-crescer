@@ -183,7 +183,6 @@ footer{padding-top:40px;padding-bottom:110px;text-align:center;font-size:.88rem;
   <p class="muted">Responda 8 perguntas rápidas e descubra o que está travando o seu perfil, com um plano pra destravar.</p>
   <button class="btn btn-ink" id="start">Começar meu diagnóstico grátis</button>
   <p class="trust">Leva 1 minuto. Feito pra quem cria conteúdo, não pra TikTok Shop.</p>
-  <button class="link" id="skip">Vim da live e quero ver o clube</button>
 </main>
 
 <!-- QUIZ -->
@@ -655,12 +654,6 @@ function applyCode(){
 
 /* ---------- Botões ---------- */
 $("start").addEventListener("click", () => { step = 0; history = []; show("quiz"); renderQuestion(); });
-$("skip").addEventListener("click", () => {
-  $("resultado").classList.add("hidden");
-  renderModules(null);
-  show("vendas");
-  $("oferta").scrollIntoView();
-});
 $("back").addEventListener("click", () => { if (history.length){ step = history.pop(); renderQuestion(); } });
 $("i-next").addEventListener("click", next);
 $("code-apply").addEventListener("click", applyCode);
