@@ -269,18 +269,9 @@ footer{padding-top:40px;padding-bottom:110px;text-align:center;font-size:.88rem;
       <h2>Entre no MC Club</h2>
       <div class="price">
         <div class="from">De <s id="p-from">R$ 97</s> por</div>
-        <div class="now"><small>R$</small><b id="p-now">67</b></div>
+        <div class="now"><small>R$</small><b id="p-now">37</b></div>
       </div>
       <a class="btn btn-sun" id="buy" href="#" target="_blank" rel="noopener">Quero entrar no MC Club</a>
-      <div class="code" id="code-box">
-        <label for="code-input">Tem o código da live?</label>
-        <p>Digite a palavra que eu falei na live e libere o preço especial.</p>
-        <div class="code-row">
-          <input id="code-input" type="text" autocomplete="off" placeholder="Código">
-          <button id="code-apply" type="button">Aplicar</button>
-        </div>
-        <div class="code-msg" id="code-msg" role="status"></div>
-      </div>
       <div class="safe">Garantia de 7 dias pela Kiwify.</div>
     </div>
   </section>
@@ -292,7 +283,6 @@ footer{padding-top:40px;padding-bottom:110px;text-align:center;font-size:.88rem;
     <details><summary>Serve pra qualquer nicho?</summary><p>Sim. Você adapta os exemplos ao seu assunto.</p></details>
     <details><summary>Recebo todas as aulas de uma vez?</summary><p>Os primeiros módulos ficam liberados na hora. Os outros vão sendo liberados ao longo de 30 dias, no ritmo certo pra você aplicar o que aprendeu.</p></details>
     <details><summary>Serve pra TikTok Shop?</summary><p>Não. O MC Club é pra quem cria conteúdo e quer crescer o perfil: ganchos, roteiro, lives, diretrizes e estratégia.</p></details>
-    <details><summary>Como funciona o código da live?</summary><p>Durante as lives eu falo uma palavra. Quem digitar essa palavra no campo da oferta libera o preço especial na hora.</p></details>
     <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias pra pedir reembolso pela Kiwify.</p></details>
   </section>
 
@@ -310,7 +300,7 @@ footer{padding-top:40px;padding-bottom:110px;text-align:center;font-size:.88rem;
 const CONFIG = {
   codigoLive: "ALFA",          // palavra da live (maiúscula/minúscula tanto faz)
   precoDe: 97,                 // preço riscado
-  precoPor: 67,                // preço normal
+  precoPor: 37,                // preço da oferta
   precoLive: 37,               // preço com o código
   checkoutNormal: "https://pay.kiwify.com.br/idNX4oo",
   checkoutLive:   "https://pay.kiwify.com.br/idNX4oo"   // troque pelo link da oferta de R$ 37
@@ -655,8 +645,6 @@ function applyCode(){
 $("start").addEventListener("click", () => { step = 0; history = []; show("quiz"); renderQuestion(); });
 $("back").addEventListener("click", () => { if (history.length){ step = history.pop(); renderQuestion(); } });
 $("i-next").addEventListener("click", next);
-$("code-apply").addEventListener("click", applyCode);
-$("code-input").addEventListener("keydown", e => { if (e.key === "Enter") applyCode(); });
 
 /* Barra fixa de compra: aparece quando a oferta sai da tela */
 if ("IntersectionObserver" in window){
