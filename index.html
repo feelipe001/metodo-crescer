@@ -593,9 +593,21 @@ function animateReport(){
 /* ---------- Preço, código e checkout ---------- */
 function normalize(t){ return t.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]/gi,"").toUpperCase(); }
 
+/* Repassa pro checkout tudo o que vier no link da página (código de afiliado, utm etc.)
+   Ex.: .../metodo-crescer/?afid=ABC123  ->  pay.kiwify.com.br/idNX4oo?afid=ABC123 */
+function withAffiliate(base){
+  try{
+    const page = new URLSearchParams(window.location.search);
+    if (![...page.keys()].length) return base;
+    const url = new URL(base);
+    page.forEach((v,k) => url.searchParams.set(k, v));
+    return url.toString();
+  }catch(e){ return base; }
+}
+
 function updatePrice(){
   const price = unlocked ? CONFIG.precoLive : CONFIG.precoPor;
-  const link = unlocked ? CONFIG.checkoutLive : CONFIG.checkoutNormal;
+  const link = withAffiliate(unlocked ? CONFIG.checkoutLive : CONFIG.checkoutNormal);
   $("p-now").textContent = price;
   $("s-price").textContent = price;
   $("p-from").textContent = "R$ " + (unlocked ? CONFIG.precoPor : CONFIG.precoDe);
